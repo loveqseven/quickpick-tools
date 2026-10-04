@@ -1,171 +1,119 @@
-/* ================================================================= *
-   QuickPick Tools - 现代化极简浅色主题样式
-   ================================================================ * */
-
-:root {
-  --bg-color: #f8fafc;
-  --card-bg: #ffffff;
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
-  --accent-color: #3b82f6;
-  --accent-hover: #2563eb;
-  --border-color: #e2e8f0;
-  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  --radius: 10px;
+/* QuickPick Tools - redesign. Tokens first, then layout, then components. */
+:root{
+  --bg:#f1f3f8;--panel:#fff;--ink:#0f1729;--text:#34405a;--mute:#5b6479;--line:#d9deea;--edge:#0f1729;
+  --blue:#2f3dff;--sun:#ffd23f;--sun-ink:#0f1729;--tray:#fff6c9;
+  --c-generators:#2f3dff;--c-numbers:#0b8f6a;--c-games:#dc2626;--c-people:#7c3aed;--c-food:#c2410c;
+  --c-travel:#0369a1;--c-design:#a21caf;--c-education:#4d7c0f;--c-health:#0891b2;
+  color-scheme:light dark;
 }
+@media(prefers-color-scheme:dark){:root{
+  --bg:#0b1020;--panel:#141b2f;--ink:#eef1fb;--text:#c3cadd;--mute:#97a1ba;--line:#2a3350;--edge:#eef1fb;
+  --blue:#8a93ff;--tray:#2b2710;
+}}
+*{box-sizing:border-box}
+html{scroll-padding-top:76px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 "Avenir Next","Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{color:var(--ink);line-height:1.15;letter-spacing:-.025em}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px;border-radius:6px}
+.wrap{width:min(1080px,92%);margin:0 auto}
 
-/* 全局基础设置 */
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background-color: var(--bg-color);
-  color: var(--text-primary);
-  line-height: 1.6;
-  margin: 0;
-  padding: 0;
-}
+/* Header */
+header{background:var(--panel);border-bottom:2px solid var(--edge);position:sticky;top:0;z-index:10}
+.nav{height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-.02em}
+.logo::before{content:"";width:20px;height:20px;background:var(--sun);border:2px solid var(--edge);border-radius:6px;box-shadow:2px 2px 0 var(--edge)}
+.logo b{font-weight:800;color:var(--blue)}
+nav{display:flex;gap:4px;font-weight:600;font-size:14px}
+nav a{padding:8px 12px;border-radius:8px;color:var(--mute)}
+nav a:hover{background:var(--bg);color:var(--ink)}
 
-/* 页面容器（假设你的内容包在一个 container 或 main 中，可根据实际类名调整） */
-main, .container {
-  max-width: 1000px;
-  margin: 40px auto;
-  padding: 0 20px;
-}
+/* Home hero: headline plus a live coin-style decider */
+.hero{padding:56px 0 36px}
+.hero .wrap{display:grid;grid-template-columns:1.25fr 1fr;gap:40px;align-items:center}
+.hero h1{font-size:clamp(34px,5.4vw,58px);letter-spacing:-.035em;line-height:1.04;margin:0 0 16px}
+.hero p{font-size:18px;color:var(--mute);max-width:46ch;margin:0 0 24px}
+.search input{width:100%;max-width:460px;padding:14px 16px;border:2px solid var(--edge);border-radius:12px;background:var(--panel);color:var(--ink);font:inherit}
+.search input::placeholder{color:var(--mute)}
+.decider{background:var(--panel);border:2px solid var(--edge);border-radius:18px;box-shadow:6px 6px 0 var(--edge);padding:22px;text-align:center}
+.decider small{display:block;font-weight:700;color:var(--mute);font-size:14px}
+.answer{font-size:clamp(56px,9vw,84px);font-weight:900;letter-spacing:-.04em;color:var(--ink);line-height:1.1;margin:8px 0 16px;min-height:1.1em}
 
-/* 导航栏样式优化 */
-nav, header {
-  background-color: var(--card-bg);
-  border-bottom: 1px solid var(--border-color);
-  padding: 16px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: var(--shadow-sm);
-  margin-bottom: 30px;
-}
+/* Buttons: one loud element, the primary action */
+.box button,.decider button{display:block;width:100%;background:var(--sun);color:var(--sun-ink);border:2px solid var(--edge);border-radius:12px;padding:14px 26px;font-family:inherit;font-weight:800;font-size:17px;cursor:pointer;box-shadow:3px 3px 0 var(--edge)}
+.box button{width:auto}
+.box button:active,.decider button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--edge)}
 
-nav a, header a {
-  color: var(--text-primary);
-  text-decoration: none;
-  font-weight: 500;
-  margin-right: 15px;
-  transition: color 0.2s;
-}
+/* Browse: category tabs and tool grid */
+main>h2:first-child{font-size:28px;margin:12px 0 4px}
+.sub{color:var(--mute);margin:0}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}
+.chip{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-family:inherit;font-weight:600;font-size:14px;color:var(--text);cursor:pointer}
+.chip span{color:var(--mute);font-weight:500;margin-left:4px}
+.chip:hover{border-color:var(--edge)}
+.chip.active{background:var(--edge);border-color:var(--edge);color:var(--panel)}
+.chip.active span{color:inherit;opacity:.7}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--cc,var(--line));border-radius:12px;padding:14px 16px}
+.card:hover{border-color:var(--edge);border-left-color:var(--cc,var(--edge));box-shadow:3px 3px 0 var(--edge)}
+.card h3{font-size:16px;margin:0}
+.card p{font-size:13.5px;color:var(--mute);line-height:1.45;margin:4px 0 0}
+.ico,.cat{display:none}
+[data-cat=generators]{--cc:var(--c-generators)}[data-cat=numbers]{--cc:var(--c-numbers)}[data-cat=games]{--cc:var(--c-games)}
+[data-cat=people]{--cc:var(--c-people)}[data-cat=food]{--cc:var(--c-food)}[data-cat=travel]{--cc:var(--c-travel)}
+[data-cat=design]{--cc:var(--c-design)}[data-cat=education]{--cc:var(--c-education)}[data-cat=health]{--cc:var(--c-health)}
 
-nav a:hover, header a:hover {
-  color: var(--accent-color);
-}
+/* Tool page: the tool is the hero */
+.breadcrumb{font-size:13px;font-weight:600;color:var(--mute);margin:18px 0 0}
+.breadcrumb a{color:var(--blue)}
+.breadcrumb a:hover{text-decoration:underline}
+.toolhero{padding:14px 0 22px}
+.toolhero h1{font-size:clamp(30px,5vw,46px);letter-spacing:-.03em;margin:10px 0 8px}
+.toolhero p{font-size:17px;color:var(--mute);max-width:60ch;margin:0}
+.tool-meta{display:flex;gap:6px;flex-wrap:wrap}
+.pill{border:1px solid var(--line);background:var(--panel);color:var(--mute);border-radius:999px;padding:3px 10px;font-size:12px;font-weight:600}
+.box{max-width:820px;background:var(--panel);border:2px solid var(--edge);border-radius:18px;box-shadow:6px 6px 0 var(--edge);padding:24px}
+.box h2{font-size:15px;color:var(--mute);margin:0 0 12px;letter-spacing:0}
+.box label{display:block;font-weight:600;font-size:14px;color:var(--ink)}
+.box textarea,.box input{width:100%;padding:12px 14px;border:2px solid var(--line);border-radius:10px;margin:6px 0 16px;font:inherit;background:var(--bg);color:var(--ink)}
+.box textarea:focus,.box input:focus{border-color:var(--edge);outline:0}
+.result{margin-top:20px;background:var(--tray);border:2px solid var(--edge);border-radius:14px;padding:22px;text-align:center;font-size:clamp(24px,5vw,38px);font-weight:800;line-height:1.25;letter-spacing:-.02em;color:var(--ink);min-height:96px;display:grid;place-items:center;overflow-wrap:anywhere}
 
-/* 标题样式 */
-h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  color: var(--text-primary);
-  margin-bottom: 10px;
-}
+/* Ads stay quiet and clearly separate */
+.ad{min-height:90px;border:1px dashed var(--line);color:var(--mute);display:grid;place-items:center;margin:32px 0;font-size:11px}
+.ad-label{letter-spacing:.08em}
 
-p {
-  color: var(--text-secondary);
-}
+/* Reading column */
+.content{max-width:720px;padding:8px 0 32px}
+.content h2,.prose h2{font-size:23px;margin:38px 0 10px}
+.content p,.prose p,.prose li{line-height:1.75;color:var(--text)}
+.prose ul{padding-left:22px}
+details{border-top:1px solid var(--line);padding:14px 0}
+details:last-child{border-bottom:1px solid var(--line)}
+summary{font-weight:700;color:var(--ink);cursor:pointer}
+details p{margin:8px 0 0}
+.related{margin:20px 0 48px}
+.related h2{font-size:23px;margin:0 0 14px}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.related-card{display:block;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.related-card:hover{border-color:var(--edge);box-shadow:3px 3px 0 var(--edge)}
+.related-card b{font-size:15px;color:var(--ink)}
+.related-card p{font-size:13px!important;color:var(--mute)!important;margin:4px 0 0!important}
 
-/* 搜索框美化 */
-input[type="text"], input[type="search"] {
-  width: 100%;
-  max-width: 400px;
-  padding: 12px 16px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  background-color: var(--card-bg);
-  font-size: 0.95rem;
-  outline: none;
-  transition: all 0.2s;
-  box-shadow: var(--shadow-sm);
-  margin: 20px 0;
-}
+/* Category pages */
+.category-hero{padding:20px 0 6px}
+.category-hero h1{font-size:clamp(30px,5vw,46px);margin:0 0 6px}
+.category-hero p{color:var(--mute);font-size:17px;margin:0 0 14px}
+.stat{display:inline-block;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:4px 12px;font-size:13px;font-weight:600;color:var(--mute)}
 
-input[type="text"]:focus, input[type="search"]:focus {
-  border-color: var(--accent-color);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
-}
+/* Footer */
+footer{background:var(--panel);border-top:2px solid var(--edge);margin-top:24px;padding:40px 0;color:var(--mute);font-size:15px}
+footer h3,footer b{color:var(--ink);font-size:16px}
+footer p{margin:6px 0 0;line-height:1.9}
+footer a:hover{color:var(--blue);text-decoration:underline}
+.foot{display:grid;grid-template-columns:2fr 1fr 1fr;gap:30px}
 
-/* 分类标签/按钮美化 */
-.categories, .tags, button, .btn {
-  display: inline-flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin: 15px 0;
-}
-
-button, .category-tag, .filter-btn {
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  cursor: pointer;
-  box-shadow: var(--shadow-sm);
-  transition: all 0.2s;
-  text-decoration: none;
-}
-
-button:hover, .category-tag:hover, .filter-btn:hover, button.active {
-  background-color: var(--accent-color);
-  color: white;
-  border-color: var(--accent-color);
-}
-
-/* 工具列表改成现代网格卡片布局（替代原本凌乱的下划线文字链接） */
-.tool-list, .tools-container, ul {
-  list-style: none;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
-  margin-top: 20px;
-}
-
-.tool-item, li {
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  padding: 20px;
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.2s, box-shadow 0.2s;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.tool-item:hover, li:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-  border-color: #cbd5e1;
-}
-
-/* 去除丑陋的默认蓝色下划线，改造成现代卡片内的链接 */
-a {
-  color: var(--accent-color);
-  text-decoration: none;
-  font-weight: 500;
-}
-
-a:hover {
-  color: var(--accent-hover);
-  text-decoration: underline;
-}
-
-.tool-item a, li a {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  display: block;
-  margin-bottom: 6px;
-}
-
-.tool-item a:hover, li a:hover {
-  color: var(--accent-color);
-  text-decoration: none;
-}
+@media(max-width:860px){.hero .wrap{grid-template-columns:1fr;gap:28px}.foot{grid-template-columns:1fr}}
+@media(max-width:600px){.logo{font-size:18px}nav{font-size:13px}nav a{padding:8px;white-space:nowrap}nav a:nth-child(n+3){display:none}.box{padding:18px;box-shadow:4px 4px 0 var(--edge)}}
+@media(max-width:440px){nav a:nth-child(n+2){display:none}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
